@@ -1,0 +1,21 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+{{ flatpage.title }}
+{% endblock title %}
+
+{% block content %}
+<h2>{{ flatpage.title }}</h2>
+<hr>
+    {% if news_list %}
+        {% for item in news_list %}
+            <p>
+            {{ item.title }}
+            {{ item.datetime_of_topic|date:'M: d: Y' }}
+            {{ item.text|truncatechars:20 }}
+            </p>
+        {% endfor %}
+    {% else %}
+        <h2>Ничего интересного</h2>
+    {% endif %}
+{% endblock content %}

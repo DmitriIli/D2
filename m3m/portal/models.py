@@ -43,6 +43,11 @@ class Post(models.Model):
     text = models.TextField(default='text')
     rating = models.SmallIntegerField(default=0)
 
+    def __str__(self):
+        return f'{self.title}:\n' \
+               f'{self.datetime_of_topic}, '\
+               f'{self.text[:20]}...'
+
     def like(self):
         self.rating += 1
         self.save()
