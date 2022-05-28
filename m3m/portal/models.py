@@ -2,8 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 
-
 # Create your models here.
+from django.urls import reverse
+
 
 class Author(models.Model):
     author = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -45,7 +46,7 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.title}:\n' \
-               f'{self.datetime_of_topic}, '\
+               f'{self.datetime_of_topic}, ' \
                f'{self.text[:20]}...'
 
     def like(self):
@@ -58,6 +59,9 @@ class Post(models.Model):
 
     def preview(self):
         return f'{self.text[:123]}...'
+
+    def get_absolute_url(self):
+        return reverse('postdetail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):

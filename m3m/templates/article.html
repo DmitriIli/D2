@@ -1,4 +1,8 @@
-{% extends 'flatpages/default.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends 'flatpages/default.html' %}
 
 {% block title %}
 {{ flatpage.title }}
@@ -7,8 +11,8 @@
 {% block content %}
 <h2>{{ flatpage.title }}</h2>
 <hr>
-{% if news_list %}
-{% for item in news_list %}
+{% if article_list %}
+{% for item in article_list %}
 <p>
     {{ item.title }}
     {{ item.datetime_of_topic|date:'M: d: Y' }}
@@ -35,4 +39,9 @@
     <a href="?page={{page_obj.paginator.num_pages}}">{{page_obj.paginator.num_pages}}</a>
 {% endif%}
 
-{% endblock content %}
+{% endblock content %}</title>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,8 +1,47 @@
 {% extends 'flatpages/default.html' %}
-
-{% load filters %}
-
+{% load custom_tags %}
 {% block title %}
-News
+{{ flatpage.title }}
 {% endblock title %}
+<br>
+{% block content %}
+<h1>Запрос</h1>
+<hr>
+{# Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе #}
+<form action="" method="get">
+    {# Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями #}
+    {{ filterset.form }}
+    {# Добавим кнопку отправки данных формы #}
+    <input type="submit" value="Найти"/>
+</form>
+<hr>
+{% if filterset.qs %}
+{% for item in filterset.qs %}
+<p>
+    {{ item.title }}
+    {{ item.datetime_of_topic|date:'M: d: Y' }}
+    {{ item.text|truncatechars:20 }}
+</p>
+{% endfor %}
+{% else %}
+<h2>Ничего не найдено</h2>
+{% endif %}
+
+{% if page_obj.has_previous and page_obj.previous_page_number != 1 %}
+<a href="?{% url_replace page=1 %}">{{1}}</a>
+<a href="?page=page_obj.previous_page_number">{{page_obj.previous_page_number}}</a>
+{% elif page_obj.previous_page_number == 1 %}
+<a href="?{% url_replace page=1 %}">{{1}}</a>
+{% endif%}
+
+{{page_obj.number}}
+
+{% if page_obj.has_next and page_obj.next_page_number != page_obj.paginator.num_pages %}
+<a href="?{% url_replace page=page_obj.next_page_number %}">{{page_obj.next_page_number}}</a>
+<a href="?{% url_replace page=page_obj.next_page_number %}">{{page_obj.paginator.num_pages}}</a>
+{% elif page_obj.next_page_number == page_obj.paginator.num_pages %}
+<a href="?{% url_replace page=page_obj.next_page_number %}">{{page_obj.paginator.num_pages}}</a>
+{% endif%}
+<hr>
+{% endblock content %}
 <br>
