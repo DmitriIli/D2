@@ -1,12 +1,11 @@
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
-
-from . import forms
+from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView, TemplateView
 from .forms import PostForm
 from .models import Post
 from .filters import NewsFilter
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 class NewsList(ListView):
@@ -75,10 +74,12 @@ class SearchList(ListView):
 #
 #     return render(request, 'edit_post.html', {'form': form})
 
-class AddPost(CreateView):
+class AddPost(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'edit_post.html'
+
+    permission_required = ('portal.add_post')
 
     def form_valid(self, form):
         post = form.save(commit=False)
@@ -90,10 +91,11 @@ class AddPost(CreateView):
         return super().form_valid(form)
 
 
-class UpdatePost(UpdateView):
+class UpdatePost(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'edit_post.html'
+    permission_required = ('portal.change_post')
 
     def get(self, request, *args, **kwargs):
         try:
@@ -104,10 +106,12 @@ class UpdatePost(UpdateView):
         return self.render_to_response(context)
 
 
-class DeletePost(DeleteView):
+class DeletePost(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'delete.html'
+    permission_required = ('portal.delete_post')
     success_url = reverse_lazy('search')
+
 
     def get(self, request, *args, **kwargs):
         try:
@@ -116,3 +120,7 @@ class DeletePost(DeleteView):
             return redirect('search')
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
+
+
+class MainView(TemplateView):
+    template_name = 'main.html'

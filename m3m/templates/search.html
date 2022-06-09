@@ -27,21 +27,6 @@
 <h2>Ничего не найдено</h2>
 {% endif %}
 
-{% if page_obj.has_previous and page_obj.previous_page_number != 1 %}
-<a href="?{% url_replace page=1 %}">{{1}}</a>
-<a href="?page=page_obj.previous_page_number">{{page_obj.previous_page_number}}</a>
-{% elif page_obj.previous_page_number == 1 %}
-<a href="?{% url_replace page=1 %}">{{1}}</a>
-{% endif%}
-
-{{page_obj.number}}
-
-{% if page_obj.has_next and page_obj.next_page_number != page_obj.paginator.num_pages %}
-<a href="?{% url_replace page=page_obj.next_page_number %}">{{page_obj.next_page_number}}</a>
-<a href="?{% url_replace page=page_obj.next_page_number %}">{{page_obj.paginator.num_pages}}</a>
-{% elif page_obj.next_page_number == page_obj.paginator.num_pages %}
-<a href="?{% url_replace page=page_obj.next_page_number %}">{{page_obj.paginator.num_pages}}</a>
-{% endif%}
 <hr>
 {% endblock content %}
 <br>

@@ -10,6 +10,12 @@ class Author(models.Model):
     author = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.SmallIntegerField(default=0)
 
+    def __str__(self):
+        return self.author.username
+
+    class Meta:
+        pass
+
     def update_rating(self):
         rating_post = self.post_set.aggregate(post_rating=Sum('rating'))
         r_post = 0
@@ -23,9 +29,12 @@ class Author(models.Model):
         self.save()
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
+    def __str__(self):
+        return self.name
 
 class Post(models.Model):
     news = 'NW'
